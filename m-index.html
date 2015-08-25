@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Insignificant Voyage: A Game</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+	<div id="screen-overlay"></div>
+		<div id="gameBar">
+			<div id="lives"></div>
+			<div id="timer">Time Remaining: <span id="time"></span></div>
+			<div id="score"></div>
+		</div>
+		<div id="start">
+			<button id="start-button" type="button" onclick="startGame()">Click to Begin Your Adventure!</button>
+		</div>
+
+	<script>
+		var resetTimer = true;
+
+		function startGame(){
+        	document.getElementById('start').style.display = 'none';
+        	document.getElementById('screen-overlay').style.display = 'none';
+        	begin = true;
+        	resetTimer = false;
+        	countdown();
+    	}
+
+    	function beginNewGame(){
+    		document.getElementById('start').style.display = 'block';
+        	document.getElementById('screen-overlay').style.display = 'block';
+        	lives = 3;
+        	begin = false;
+        	resetTimer = true;
+        	gemsObtained = 0;
+    	}
+
+
+        function startTimer(duration, display) {
+		    var start = Date.now(),
+		        diff,
+		        minutes,
+		        seconds;
+		    function timer() {
+		        // get the number of seconds that have elapsed since
+		        // startTimer() was called
+		        	if(resetTimer){
+		        		clearInterval(settings);
+		        	}
+			        diff = duration - (((Date.now() - start) / 1000) | 0);
+
+			        // does the same job as parseInt truncates the float
+			        minutes = (diff / 60) | 0;
+			        seconds = (diff % 60) | 0;
+
+			        minutes = minutes < 10 ? "0" + minutes : minutes;
+			        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+			        display.textContent = minutes + ":" + seconds;
+			        if(minutes == 0 && seconds == 0){
+			        	display.textContent = "Time is up";
+			        	clearInterval(settings);
+			        	player.timesUp();
+			        }
+			        if (diff <= 0) {
+			            // add one second so that the count down starts at the full duration
+			            // example 05:00 not 04:59
+			            start = Date.now() + 1000;
+			        }
+
+    		};
+    // we don't want to wait a full second before the timer starts
+    		timer();
+    		var settings = setInterval(timer, 1000);
+			}
+
+
+		function countdown() {
+	    		var timeMinutes = 60 * 3,
+	        	display = document.querySelector('#time');
+	    		startTimer(timeMinutes, display);
+		};
+
+
+	</script>
+    <script src="js/m-resources.js"></script>
+    <script src="js/m-app.js"></script>
+    <script src="js/m-engine.js"></script>
+</body>
+</html>
