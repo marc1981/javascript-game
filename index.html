@@ -3,6 +3,7 @@
 <head>
     <title>Insignificant Voyage: A Game</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/pop-styles.css">
 </head>
 <body>
 	<div id="screen-overlay"></div>
@@ -12,8 +13,51 @@
 			<div id="score"></div>
 		</div>
 		<div id="start">
-			<button id="start-button" type="button" onclick="startGame()">Click to Begin Your Adventure!</button>
+			<button id="start-button" type="button" onclick="startGame()">Begin Your Adventure!</button>
 		</div>
+
+<!--Next section contains items necessary for pop-up alerts.
+	They are not displayed initially, but become visible at predetermined events in the game. This avoids the use of prompts and the standard alert windows that are the default of javascript.-->
+	<div id="cover" style="display: none;">
+	</div>
+	<div id="vinePopUp" class="alerts" style="display: none">
+
+    	<button type="button" onclick="popup('vinePopUp'), player.dead()">Continue</button>
+	</div>
+	<div id="flyingBugPopUp" class="alerts" style="display: none">
+
+    	<button type="button" onclick="popup('flyingBugPopUp'), player.dead()">Continue</button>
+	</div>
+	<div id="bugPopUp" class="alerts" style="display: none">
+
+		<button type="button" onclick="popup('bugPopUp'), player.dead()">Continue</button>
+	</div>
+	<div id="lavaPopUp" class="alerts" style="display: none">
+
+		<button type="button" onclick="popup('lavaPopUp'), player.dead()">Continue</button>
+	</div>
+	<div id="quitPopUp" class="alerts" style="display: none">
+	</div>
+	<div id="tryAgain" class="question" style="display: none">
+		<button id="keepPlaying" type="button" onclick="popup('tryAgain'), playerNewImageClear()">Yes, I want to redeem myself.</button><br>
+		<button id="quit" type="button" onclick="popup('tryAgain'), quitGame()">No, I give up.</button>
+	</div>
+	<div id="noLivesLeft" class="endStyle" style="display: none"></div>
+	<div id="riddle" style="display: none">
+			<input type="text" id="answer" placeholder="Enter a number."><br>
+			<input type="submit" id="answerSubmit" onclick="responseToAnswer()" value="Submit">
+	</div>
+	<div id="proceed" style="display: none">
+	</div>
+	<div id="need-gems" style="display: none">
+	</div>
+	<div id="stung" style="display: none">
+	</div>
+	<div id="timeUp" style="display: none">
+	</div>
+	<div id="winner" style="display: none">
+		<button id="playAgain" type="button" onclick="popup('winner'), beginNewGame()">Play Again?</button>
+	</div>
 
 	<script>
 		var resetTimer = true;
@@ -34,7 +78,6 @@
         	resetTimer = true;
         	gemsObtained = 0;
     	}
-
 
         function startTimer(duration, display) {
 		    var start = Date.now(),
@@ -57,6 +100,9 @@
 			        seconds = seconds < 10 ? "0" + seconds : seconds;
 
 			        display.textContent = minutes + ":" + seconds;
+			        // if(seconds == 10 || seconds == 25){
+			        // 	popup('popUpDiv');
+			        // }
 			        if(minutes == 0 && seconds == 0){
 			        	display.textContent = "Time is up";
 			        	clearInterval(settings);
@@ -67,9 +113,7 @@
 			            // example 05:00 not 04:59
 			            start = Date.now() + 1000;
 			        }
-
     		};
-    // we don't want to wait a full second before the timer starts
     		timer();
     		var settings = setInterval(timer, 1000);
 			}
@@ -81,8 +125,38 @@
 	    		startTimer(timeMinutes, display);
 		};
 
+        function responseToAnswer(){
+            var reply = document.getElementById('answer').value;
+            var answer = 1;
+				player.y = 60;
+                player.x = 650;
+      	    if(reply == answer){
+                popup('riddle');
+                popup('proceed');
+                setTimeout(function(){popup('proceed');
+	                if(gemsObtained >= 3){
+	                    player.win();
+	                    Gatekeeper.sprite = "images/goodbye.png";
+	                    Gatekeeper.x = 220;
+	                    Gatekeeper.y = 30;
+	                } else {
+	                    player.x = 405;
+	                    player.y = 425;
+	                    popup('need-gems');
+	                    setTimeout(function(){popup('need-gems')}, 6000);
+	                }
+            	}, 4000);
+            } else {
+                popup('riddle');
+                popup('stung');
+                setTimeout(function(){popup('stung'); player.dead()}, 7000);
+            }
+        }
+
+
 
 	</script>
+	<script src="js/css-pop.js"></script>
     <script src="js/m-resources.js"></script>
     <script src="js/m-app.js"></script>
     <script src="js/m-engine.js"></script>

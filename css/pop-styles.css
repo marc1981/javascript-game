@@ -1,0 +1,178 @@
+
+#cover {
+   background-color:#111;
+   opacity: 0.65;
+   *background:none;
+   position:absolute;
+   z-index: 2;
+   top:40px;
+   left:0px;
+   width:100%;
+   height: 757px;
+}
+
+#vinePopUp {
+	background:url(images/vine-alert.png) no-repeat;
+}
+
+#flyingBugPopUp {
+	background:url(images/flying-bug-alert.png) no-repeat;
+}
+
+#bugPopUp {
+	background:url(images/bug-alert.png) no-repeat;
+}
+
+#quitPopUp {
+	background:url(images/quitters.png) no-repeat;
+}
+
+#lavaPopUp {
+	background:url(images/lava-alert.png) no-repeat;
+}
+
+#tryAgain {
+	background:url(images/try-again.png) no-repeat;
+}
+
+#noLivesLeft {
+	background:url(images/rip.png) no-repeat;
+	position:absolute;
+	margin: auto;
+	width:500px;
+	height:600px;
+	z-index: 3;
+	top: 10px;
+	left: 430px;
+}
+
+#riddle {
+	background:url(images/riddle.png) no-repeat;
+	position:absolute;
+	width:600px;
+	height:700px;
+	z-index: 3;
+	top: 10px;
+	left: 375px;
+}
+
+#winner {
+	background:url(images/winner.png) no-repeat;
+	position:absolute;
+	width:600px;
+	height:700px;
+	z-index: 3;
+	top: 10px;
+	left: 375px;
+}
+
+#playAgain{
+	margin-bottom: 15px;
+	position:relative;
+	border-radius: 10px;
+	background-color: #EFE9D0;
+	top: 575px;
+	height: 40px;
+	width: 145px;
+	left: -10px;
+	font-size: 1.1em;
+	color: red;
+}
+
+#stung {
+	background:url(images/stung-alert.png) no-repeat;
+	position:absolute;
+	width:600px;
+	height:525px;
+	z-index: 3;
+	top: 15px;
+	left: 355px;
+}
+
+#riddle input{
+	top: 500px;
+	margin-bottom: 10px;
+	position: relative;
+}
+
+#answer{
+	height: 30px;
+	font-size: 1.1em;
+	width: 130px;
+	text-align: center;
+}
+
+#answerSubmit{
+	height: 35px;
+	font-size: 1.1em;
+	width: 130px;
+	color: red;
+	border-radius: 10px;
+}
+
+#proceed{
+	background:url(images/proceed.png) no-repeat;
+	width: 500px;
+	height: 400px;
+	z-index: 3;
+	position: absolute;
+	top: 60px;
+	left: 450px;
+}
+
+#need-gems{
+	background:url(images/need-gems.png) no-repeat;
+	width: 500px;
+	height: 400px;
+	z-index: 3;
+	position: absolute;
+	top: 60px;
+	left: 450px;
+}
+
+#timeUp{
+	background:url(images/time.png) no-repeat;
+	width: 500px;
+	height: 400px;
+	z-index: 3;
+	position: absolute;
+	top: 60px;
+	left: 400px;
+}
+
+.question {
+	position:absolute;
+	width:400px;
+	height:400px;
+	z-index: 3;
+	top: 60px;
+	left: 475px;
+}
+
+.question button {
+	margin-bottom: 15px;
+	position:relative;
+	border-radius: 10px;
+	background-color: #EFE9D0;
+	top:260px;
+	font-size: 1.1em;
+	color: red;
+}
+
+.alerts {
+	position:absolute;
+	width:400px;
+	height:400px;
+	z-index: 3;
+	top: 60px;
+	left: 475px;
+}
+
+.alerts button {
+	position:relative;
+	border-radius: 10px;
+	background-color: #EFE9D0;
+	top:300px;
+	font-size: 1.3em;
+	color: red;
+}

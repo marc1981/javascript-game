@@ -6,8 +6,9 @@ Object.prototype.render = function() {
 //Reset player to beginning position
 Object.prototype.reset = function() {
   player.x = 450;
-  player.y = 500;
+  player.y = 450;
   ctx.clearRect(0, 0, 500, 500);
+  player.sprite = 'images/elfin.png';
 }
 
 //If player reaches water, image changes, announces winning.
@@ -18,15 +19,24 @@ Object.prototype.win = function(){
     moveRight = false;
     moveLeft = false;
     lives = 3;
-    setTimeout(function(){ctx.clearRect(600, -50, 110, 110); ctx.clearRect(200, 0, 300, 200); player.sprite = 'images/elfin.png'; player.reset(); beginNewGame(); }, 5000);
+    announceWinner();
 }
 
+//Show winner screen.
+function announceWinner(){
+    popup('winner');
+    ctx.clearRect(600, -50, 110, 110);
+    ctx.clearRect(200, 0, 300, 200);
+    player.reset();
+}
+
+//If time runs out, announce and end game.
 Object.prototype.timesUp = function(){
     player.sprite = "images/grave.png";
     player.x = 405;
     player.y = 325;
-    setTimeout(function(){ alert("You have have failed to complete your mission in the allotted time. I suggest you buy a watch. Game Over.") }, 500);
-    setTimeout(function(){player.sprite = 'images/elfin.png'; player.reset(); beginNewGame();}, 3000);
+    setTimeout(function(){ popup('timeUp') }, 500);
+    setTimeout(function(){popup('timeUp'); player.sprite = 'images/elfin.png'; player.reset(); beginNewGame();}, 3000);
 }
 //If player is killed the number of lives decrements, and if no more lives, game is over. Otherwise ask player to try again.
 Object.prototype.dead = function(){
@@ -36,26 +46,32 @@ Object.prototype.dead = function(){
         player.sprite = "images/grave.png";
         player.x = 405;
         player.y = 325;
-        setTimeout(function(){ alert("You have ceased to be. Game Over.") }, 700);
-        setTimeout(function(){player.sprite = 'images/elfin.png'; player.reset(); beginNewGame();}, 5000);
+        setTimeout(function(){ popup('noLivesLeft') }, 900);
+        setTimeout(function(){ popup('noLivesLeft'); player.sprite = 'images/elfin.png'; player.reset(); beginNewGame();}, 7000);
     } else {
         player.sprite = "images/dead.png";
         player.x = 405;
-        player.y = 325;
+        player.y = 425;
         setTimeout(function(){
-            if(confirm("Would you like to play again?")){
-                ctx.clearRect(450, 500, 100, 100);
-                player.sprite = 'images/elfin.png';
-                player.reset();
-            } else {
-                alert("Fine, be that way.");
-                player.x = 405;
-                player.y = 325;
-                player.sprite = 'images/grave.png';
-                setTimeout(function(){player.sprite = 'images/elfin.png'; player.reset(); beginNewGame();}, 5000);
-            }
+            popup('tryAgain');
         }, 500);
     }
+}
+
+//clear contents where dead character was and reset player.
+function playerNewImageClear(){
+    ctx.clearRect(450, 500, 100, 100);
+    player.sprite = 'images/elfin.png';
+    player.reset();
+}
+
+//show if player chooses to quit game.
+function quitGame(){
+    popup('quitPopUp');
+    player.x = 405;
+    player.y = 325;
+    player.sprite = 'images/grave.png';
+    setTimeout(function(){player.sprite = 'images/elfin.png'; popup('quitPopUp'); player.reset(); beginNewGame();}, 5000);
 }
 
 var begin = false;
@@ -102,8 +118,8 @@ Enemy.prototype.update = function(dt) {
     //If the player comes within 30px of an enemy's x and y coordinates, reset the game
     if(player.x >= this.x - 30 && player.x <= this.x + 30){
         if(player.y >= this.y - 30 && player.y <= this.y + 30){
-            alert("Oh no! You're totally allergic to bugs! Bummer!");
-            player.dead();
+            popup('bugPopUp');
+            player.reset();
         }
     }
 }
@@ -119,8 +135,8 @@ FlyingEnemy.prototype.update = function(dt) {
     //If the player comes within 30px of an enemy's x and y coordinates, reset the game
     if(player.x >= this.x - 30 && player.x <= this.x + 30){
         if(player.y >= this.y - 30 && player.y <= this.y + 30){
-            alert("Flying bugs are the worst.")
-            player.dead();
+            popup('flyingBugPopUp');
+            player.reset();
         }
     }
 }
@@ -154,8 +170,8 @@ Weeds.prototype.update = function(dt){
 //If player is caught in weeds, player dies.
     if(player.x >= this.x - 30 && player.x <= this.x + 30){
         if(player.y >= this.y - 50 && player.y <= this.y + 40){
-            alert("Oh no! You have been ensnared by the cursed Weeds of Doom!");
-            player.dead();
+            popup('vinePopUp');
+            player.reset();
         }
     }
 }
@@ -186,28 +202,13 @@ Gatekeeper.prototype.update = function(dt) {
         moveRight = true;
     }
 
-
     //If the player comes in contact with GateKeeper's x and y coordinates, prompt question
     if(player.x >= this.x - 30 && player.x <= this.x + 30){
         if(player.y >= this.y - 30 && player.y <= this.y + 30){
-            var answer = "1";
-
-            var reply = prompt("As I was going to St. Ives, I met a man with seven wives. The seven wives had seven cats, each of which had seven rats. The rats all carried seven hats, stacked upon their heads they sat. Now tell me, how many were going to St.Ives?");
-
-            if(reply == answer){
-                alert("Curses! Foiled again! Proceed.")
-                if(gemsObtained >= 3){
-                    player.win();
-                    this.sprite = "images/goodbye.png";
-                    this.x = 220;
-                    this.y = 30;
-                } else {
-                    alert("You need at least three gems to pay for your voyage!");
-                }
-            } else {
-                alert("Ha-ha-ha! You fool! I said 'As I was going to St. Ives.' There was only 1 person going to St. Ives! Now taste my venomous stinger!");
-                player.dead();
-            }
+            popup('riddle');
+            this.x = player.x + 50;
+            player.y = 60;
+            player.x = 650;
         }
     }
 }
@@ -238,12 +239,17 @@ var gemstone = new Gemstone(606, 404);
 var randomX = Math.floor((Math.random() * 700));
 var randomY = Math.floor((Math.random() * 505));
 var randomMove = function(){
-        if(randomY >= 100 && randomX >= (20 + player.x) ){
+        if(randomY >= 60 && randomX >= (20 + player.x) ){
             gemstone.x = randomX;
             gemstone.y = randomY;
             } else {
-                gemstone.x = 750;
+                if(gemstone.x <= 600){
+                gemstone.x = player.x + 100;
                 gemstone.y = 110;
+                } else{
+                    gemstone.x = player.x - 100;
+                    gemstone.y = 110;
+                }
             }
         }
 
@@ -276,30 +282,33 @@ Player.prototype.update = function(){
 
         //Player dies if steps in lava
         if(this.x >= 50 && this.x <= 101 && this.y <= 202 && this.y >= 151){
-                alert("WHOA! You just stepped in lava! Not cool, bro. Not cool.");
-                this.dead();
+                popup('lavaPopUp');
+                this.reset();
         }
 
         if(this.x >= 252 && this.x <= 303 && this.y <= 202 && this.y >= 151){
-                alert("WHOA! You just stepped in lava! Not cool, bro. Not cool.");
-                this.dead();
+                popup('lavaPopUp');
+                this.reset();
         }
 
         if(this.x >= 454 && this.x <= 505 && this.y <= 202 && this.y >= 151){
-                alert("WHOA! You just stepped in lava! Not cool, bro. Not cool.");
-                this.dead();
+                popup('lavaPopUp');
+                this.reset();
         }
 
         if(this.x >= 656 && this.x <= 707 && this.y <= 202 && this.y >= 151){
-                alert("WHOA! You just stepped in lava! Not cool, bro. Not cool.");
-                this.dead();
+                popup('lavaPopUp');
+                this.reset();
         }
         //If three gems collected and on water, player wins.
         if(this.y < 25 && gemsObtained >= 3){
             this.win();
         } else if (this.y < 25 && gemsObtained < 3) {
-            alert("You need at least three gems to pay for your voyage!");
-            this.reset();
+            popup('need-gems');
+            this.x = 650;
+            this.y = 60;
+            setTimeout(function(){popup('need-gems'); this.reset();}, 6000);
+
         }
     }
 }

@@ -51,7 +51,10 @@ canvas {
 #start{
 	display: block;
 	margin: auto;
-    height: 50px;
+    height: 600px;
+    width:	500px;
+    background-image:url(images/startscreen.png);
+    background-repeat: no-repeat;
     position: absolute;
     z-index: 1;
     top: 0;
@@ -62,10 +65,12 @@ canvas {
 
 #start button{
 	width: 250px;
-	height: 80px;
+	height: 70px;
 	text-align: center;
 	font-size: 1.4em;
 	opacity: 1;
+	color: red;
+	margin-top: 430px;
 	border: 2px solid #333333;
 	box-shadow: 10px 10px 15px black;
 	border-radius: 10px;
