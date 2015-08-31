@@ -198,7 +198,7 @@ Gatekeeper.prototype.update = function(dt) {
     if(player.x >= this.x - 30 && player.x <= this.x + 30){
         if(player.y >= this.y - 30 && player.y <= this.y + 30){
             popup('riddle');
-            this.x = player.x + 50;
+            this.x = 220;
             player.y = 60;
             player.x = 650;
         }
