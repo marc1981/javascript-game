@@ -134,6 +134,7 @@
       	    if(reply == answer){
                 popup('riddle');
                 popup('proceed');
+                begin = true;
                 setTimeout(function(){popup('proceed');
 	                if(gemsObtained >= 3){
 	                    player.win();
@@ -147,6 +148,7 @@
             } else {
                 popup('riddle');
                 popup('stung');
+                begin = true;
                 setTimeout(function(){popup('stung'); player.dead()}, 7000);
             }
         }

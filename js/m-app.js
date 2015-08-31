@@ -198,9 +198,10 @@ Gatekeeper.prototype.update = function(dt) {
     if(player.x >= this.x - 30 && player.x <= this.x + 30){
         if(player.y >= this.y - 30 && player.y <= this.y + 30){
             popup('riddle');
-            this.x = 220;
+            begin = false;
+            this.x = 200;
             player.y = 60;
-            player.x = 650;
+            player.x = 660;
         }
     }
 }
