@@ -51,8 +51,8 @@ canvas {
 #start{
 	display: block;
 	margin: auto;
-    height: 600px;
-    width:	500px;
+    height: 540px;
+    width:	460px;
     background-image:url(images/startscreen.png);
     background-repeat: no-repeat;
     position: absolute;
@@ -70,7 +70,7 @@ canvas {
 	font-size: 1.4em;
 	opacity: 1;
 	color: red;
-	margin-top: 430px;
+	margin-top: 390px;
 	border: 2px solid #333333;
 	box-shadow: 10px 10px 15px black;
 	border-radius: 10px;

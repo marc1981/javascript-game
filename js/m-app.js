@@ -16,17 +16,15 @@ Object.prototype.win = function(){
     player.sprite = "images/winner.png";
     player.x = 600;
     player.y = -50;
-    moveRight = false;
-    moveLeft = false;
+    resetTimer = true;
     lives = 3;
     announceWinner();
 }
-
 //Show winner screen.
 function announceWinner(){
     popup('winner');
-    ctx.clearRect(600, -50, 110, 110);
-    ctx.clearRect(200, 0, 300, 200);
+    resetTimer = true;
+    ctx.clearRect(0, -50, 750, 750);
     player.reset();
 }
 
@@ -34,10 +32,11 @@ function announceWinner(){
 Object.prototype.timesUp = function(){
     player.sprite = "images/grave.png";
     player.x = 405;
-    player.y = 325;
+    player.y = 455;
     setTimeout(function(){ popup('timeUp') }, 500);
     setTimeout(function(){popup('timeUp'); player.sprite = 'images/elfin.png'; player.reset(); beginNewGame();}, 3000);
 }
+
 //If player is killed the number of lives decrements, and if no more lives, game is over. Otherwise ask player to try again.
 Object.prototype.dead = function(){
     lives = lives - 1;
@@ -45,7 +44,7 @@ Object.prototype.dead = function(){
     if(lives <= 0){
         player.sprite = "images/grave.png";
         player.x = 405;
-        player.y = 325;
+        player.y = 455;
         setTimeout(function(){ popup('noLivesLeft') }, 900);
         setTimeout(function(){ popup('noLivesLeft'); player.sprite = 'images/elfin.png'; player.reset(); beginNewGame();}, 7000);
     } else {
@@ -69,11 +68,12 @@ function playerNewImageClear(){
 function quitGame(){
     popup('quitPopUp');
     player.x = 405;
-    player.y = 325;
+    player.y = 455;
     player.sprite = 'images/grave.png';
     setTimeout(function(){player.sprite = 'images/elfin.png'; popup('quitPopUp'); player.reset(); beginNewGame();}, 5000);
 }
 
+//sets initial lives and gems, and then inserts number into location on screen
 var begin = false;
 var lives = 3;
 var livesRemaining = document.getElementById('lives');
@@ -149,7 +149,6 @@ var Weeds = function(x,y) {
     this.speed = 100;
 }
 
-
 //Controls up and down movement of weeds
 var moveUp = true;
 var moveDown = false;
@@ -182,13 +181,6 @@ var moveLeft = false;
 //controls the movement of Bee Gatekeeper
 Gatekeeper.prototype.update = function(dt) {
     //Sets bounds and direction of movement
-    if(moveLeft || moveRight){
-        this.sprite = "images/bee.png";
-    } else {
-        this.sprite = "images/goodbye.png";
-        this.x = 220;
-        this.y = 30;
-    }
     if(moveRight && this.x <= 600){
             this.x += this.speed * dt;
     } else {
@@ -318,7 +310,6 @@ Player.prototype.update = function(){
 Player.prototype.handleInput = function(e){
     this.ctlKey = e;
 }
-
 
 // Instantiate enemies objects
 var allEnemies = [];

@@ -61,7 +61,7 @@
 
 	<script>
 		var resetTimer = true;
-
+		//initial start screen
 		function startGame(){
         	document.getElementById('start').style.display = 'none';
         	document.getElementById('screen-overlay').style.display = 'none';
@@ -69,16 +69,17 @@
         	resetTimer = false;
         	countdown();
     	}
-
+    	//begin new game if player chooses to
     	function beginNewGame(){
     		document.getElementById('start').style.display = 'block';
         	document.getElementById('screen-overlay').style.display = 'block';
+        	ctx.clearRect(0, -50, 750, 750);
         	lives = 3;
         	begin = false;
         	resetTimer = true;
         	gemsObtained = 0;
     	}
-
+    	//controls timer
         function startTimer(duration, display) {
 		    var start = Date.now(),
 		        diff,
@@ -118,13 +119,13 @@
     		var settings = setInterval(timer, 1000);
 			}
 
-
 		function countdown() {
 	    		var timeMinutes = 60 * 3,
 	        	display = document.querySelector('#time');
 	    		startTimer(timeMinutes, display);
 		};
 
+		//governs action of gatekeeper enemy, and its response to user's input
         function responseToAnswer(){
             var reply = document.getElementById('answer').value;
             var answer = 1;
@@ -136,9 +137,6 @@
                 setTimeout(function(){popup('proceed');
 	                if(gemsObtained >= 3){
 	                    player.win();
-	                    Gatekeeper.sprite = "images/goodbye.png";
-	                    Gatekeeper.x = 220;
-	                    Gatekeeper.y = 30;
 	                } else {
 	                    player.x = 405;
 	                    player.y = 425;
@@ -152,8 +150,6 @@
                 setTimeout(function(){popup('stung'); player.dead()}, 7000);
             }
         }
-
-
 
 	</script>
 	<script src="js/css-pop.js"></script>
