@@ -3,30 +3,31 @@ var Player = function(){
     this.sprite = 'images/elfin.png';
     this.x = 450;
     this.y = 500;
-}
+};
 
 // Draw the player object on the screen
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
 
 //Reset player to beginning position
 Player.prototype.reset = function() {
-  player.x = 450;
-  player.y = 450;
+  this.x = 450;
+  this.y = 450;
   ctx.clearRect(0, 0, 500, 500);
-  player.sprite = 'images/elfin.png';
-}
+  this.sprite = 'images/elfin.png';
+};
 
 //If player reaches water, image changes, announces winning.
 Player.prototype.win = function(){
-    player.sprite = "images/winner.png";
-    player.x = 600;
-    player.y = -50;
+    this.sprite = "images/winner.png";
+    this.x = 600;
+    this.y = -50;
     resetTimer = true;
     lives = 3;
     announceWinner();
-}
+};
+
 //Show winner screen.
 function announceWinner(){
     popup('winner');
@@ -40,29 +41,29 @@ Player.prototype.timesUp = function(){
     player.sprite = "images/grave.png";
     player.x = 405;
     player.y = 455;
-    setTimeout(function(){ popup('timeUp') }, 500);
+    setTimeout(function(){ popup('timeUp'); }, 500);
     setTimeout(function(){popup('timeUp'); player.sprite = 'images/elfin.png'; player.reset(); beginNewGame();}, 3000);
-}
+};
 
 //If player is killed the number of lives decrements, and if no more lives, game is over. Otherwise ask player to try again.
 Player.prototype.dead = function(){
     lives = lives - 1;
     gemsObtained = 0;
     if(lives <= 0){
-        player.sprite = "images/grave.png";
-        player.x = 405;
-        player.y = 455;
-        setTimeout(function(){ popup('noLivesLeft') }, 900);
+        this.sprite = "images/grave.png";
+        this.x = 405;
+        this.y = 455;
+        setTimeout(function(){ popup('noLivesLeft'); }, 900);
         setTimeout(function(){ popup('noLivesLeft'); player.sprite = 'images/elfin.png'; player.reset(); beginNewGame();}, 7000);
     } else {
-        player.sprite = "images/dead.png";
-        player.x = 405;
-        player.y = 425;
+        this.sprite = "images/dead.png";
+        this.x = 405;
+        this.y = 425;
         setTimeout(function(){
             popup('tryAgain');
         }, 500);
     }
-}
+};
 
 //clear contents where dead character was and reset player.
 function playerNewImageClear(){
@@ -135,12 +136,13 @@ Player.prototype.update = function(){
 
         }
     }
-}
+};
 
 //Input handler for player
 Player.prototype.handleInput = function(e){
     this.ctlKey = e;
-}
+};
+
 // Enemies the player must avoid
 var Enemy = function(x,y) {
 
@@ -151,14 +153,14 @@ var Enemy = function(x,y) {
     this.x = x;
     this.y = y;
     this.speed = Math.floor((Math.random() * 100) + 100);
-}
+};
 
 var FlyingEnemy = function(x,y){
     this.sprite = 'images/flying-bug.png';
     this.x = x;
     this.y = y;
     this.speed = Math.floor((Math.random() * 100) + 100);
-}
+};
 
 var Gatekeeper = function(x,y) {
     this.sprite = 'images/bee.png';
@@ -166,20 +168,20 @@ var Gatekeeper = function(x,y) {
     this.x = x;
     this.y = y - 10;
     this.speed = Math.floor((Math.random() * 100) + 100);
-}
+};
 
 // Draw the enemy objects on the screen
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
 
 FlyingEnemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
 
 Gatekeeper.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
 
 Enemy.prototype.update = function(dt) {
     //if the enemy crosses off screen, reset its position. Otherwise, it keeps running.
@@ -196,7 +198,7 @@ Enemy.prototype.update = function(dt) {
             player.reset();
         }
     }
-}
+};
 
 FlyingEnemy.prototype.update = function(dt) {
     //if the enemy crosses off screen, reset its position. Otherwise, it keeps running.
@@ -213,7 +215,7 @@ FlyingEnemy.prototype.update = function(dt) {
             player.reset();
         }
     }
-}
+};
 
 var Weeds = function(x,y) {
     this.sprite = 'images/weeds.png';
@@ -221,11 +223,11 @@ var Weeds = function(x,y) {
     this.x = x;
     this.y = y;
     this.speed = 100;
-}
+};
 
 Weeds.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
 
 //Controls up and down movement of weeds
 var moveUp = true;
@@ -251,7 +253,7 @@ Weeds.prototype.update = function(dt){
             player.reset();
         }
     }
-}
+};
 
 //Sets default movement pattern for Gatekeeper
 var moveRight = true;
@@ -282,7 +284,7 @@ Gatekeeper.prototype.update = function(dt) {
             player.x = 660;
         }
     }
-}
+};
 
 //Gem
 var Gemstone = function(x,y){
@@ -290,11 +292,11 @@ var Gemstone = function(x,y){
     this.x = x;
     this.y = y;
 
-}
+};
 
 Gemstone.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
 
 //If the player comes within 40px of an gems's x and y coordinates, gem dissappears and score increments by one.
 Gemstone.prototype.update = function(){
@@ -306,7 +308,7 @@ Gemstone.prototype.update = function(){
             ++gemsObtained;
         }
     }
-}
+};
 
 var gemstone = new Gemstone(606, 404);
 
@@ -326,7 +328,7 @@ var randomMove = function(){
                     gemstone.y = 110;
                 }
             }
-        }
+        };
 
 setInterval(function(){ randomMove(); }, 7000);
 
