@@ -19,11 +19,10 @@ var Engine = (function(global) {
 
         lastTime = now;
         win.requestAnimationFrame(main);
-    };
+    }
 
     function init() {
-
-        reset();
+        player.reset();
         lastTime = Date.now();
         main();
     }

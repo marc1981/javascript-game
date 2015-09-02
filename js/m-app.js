@@ -1,10 +1,17 @@
-// Draw the enemy and player objects on the screen
-Object.prototype.render = function() {
+// Player class and initial x and y coordinates
+var Player = function(){
+    this.sprite = 'images/elfin.png';
+    this.x = 450;
+    this.y = 500;
+}
+
+// Draw the player object on the screen
+Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
 //Reset player to beginning position
-Object.prototype.reset = function() {
+Player.prototype.reset = function() {
   player.x = 450;
   player.y = 450;
   ctx.clearRect(0, 0, 500, 500);
@@ -12,7 +19,7 @@ Object.prototype.reset = function() {
 }
 
 //If player reaches water, image changes, announces winning.
-Object.prototype.win = function(){
+Player.prototype.win = function(){
     player.sprite = "images/winner.png";
     player.x = 600;
     player.y = -50;
@@ -29,7 +36,7 @@ function announceWinner(){
 }
 
 //If time runs out, announce and end game.
-Object.prototype.timesUp = function(){
+Player.prototype.timesUp = function(){
     player.sprite = "images/grave.png";
     player.x = 405;
     player.y = 455;
@@ -38,7 +45,7 @@ Object.prototype.timesUp = function(){
 }
 
 //If player is killed the number of lives decrements, and if no more lives, game is over. Otherwise ask player to try again.
-Object.prototype.dead = function(){
+Player.prototype.dead = function(){
     lives = lives - 1;
     gemsObtained = 0;
     if(lives <= 0){
@@ -80,6 +87,60 @@ var livesRemaining = document.getElementById('lives');
 var gemsObtained = 0;
 var scoreDisplay = document.getElementById('score');
 
+//Update player position
+Player.prototype.update = function(){
+    if(begin){//if left key is pressed and player is not on edge of map, pressed decrement x
+        if(this.ctlKey === 'left' && this.x > 0){
+            this.x = this.x - 50;
+        //if right key is pressed and player is not on edge of map increment x
+        }else if(this.ctlKey === 'right' && this.x != 800){
+            this.x = this.x + 50;
+        //if up key is pressed increment y
+        }else if(this.ctlKey === 'up'){
+            this.y = this.y - 50;
+        //if down key is pressed and player is not on edge of map decrement y
+        }else if (this.ctlKey === 'down' && this.y != 500){
+            this.y = this.y + 50;
+        }
+        this.ctlKey = null;
+
+        //Player dies if steps in lava
+        if(this.x >= 50 && this.x <= 101 && this.y <= 202 && this.y >= 151){
+                popup('lavaPopUp');
+                this.reset();
+        }
+
+        if(this.x >= 252 && this.x <= 303 && this.y <= 202 && this.y >= 151){
+                popup('lavaPopUp');
+                this.reset();
+        }
+
+        if(this.x >= 454 && this.x <= 505 && this.y <= 202 && this.y >= 151){
+                popup('lavaPopUp');
+                this.reset();
+        }
+
+        if(this.x >= 656 && this.x <= 707 && this.y <= 202 && this.y >= 151){
+                popup('lavaPopUp');
+                this.reset();
+        }
+        //If three gems collected and on water, player wins.
+        if(this.y < 25 && gemsObtained >= 3){
+            this.win();
+        } else if (this.y < 25 && gemsObtained < 3) {
+            popup('need-gems');
+            this.x = 650;
+            this.y = 60;
+            setTimeout(function(){popup('need-gems'); this.reset();}, 6000);
+
+        }
+    }
+}
+
+//Input handler for player
+Player.prototype.handleInput = function(e){
+    this.ctlKey = e;
+}
 // Enemies the player must avoid
 var Enemy = function(x,y) {
 
@@ -105,6 +166,19 @@ var Gatekeeper = function(x,y) {
     this.x = x;
     this.y = y - 10;
     this.speed = Math.floor((Math.random() * 100) + 100);
+}
+
+// Draw the enemy objects on the screen
+Enemy.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
+
+FlyingEnemy.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
+
+Gatekeeper.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
 Enemy.prototype.update = function(dt) {
@@ -147,6 +221,10 @@ var Weeds = function(x,y) {
     this.x = x;
     this.y = y;
     this.speed = 100;
+}
+
+Weeds.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
 //Controls up and down movement of weeds
@@ -214,6 +292,10 @@ var Gemstone = function(x,y){
 
 }
 
+Gemstone.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
+
 //If the player comes within 40px of an gems's x and y coordinates, gem dissappears and score increments by one.
 Gemstone.prototype.update = function(){
    if(player.x >= this.x - 40 && player.x <= this.x + 40){
@@ -247,70 +329,6 @@ var randomMove = function(){
         }
 
 setInterval(function(){ randomMove(); }, 7000);
-
-
-// Player class and initial x and y coordinates
-var Player = function(){
-    this.sprite = 'images/elfin.png';
-    this.x = 450;
-    this.y = 500;
-}
-
-//Update player position
-Player.prototype.update = function(){
-    if(begin){//if left key is pressed and player is not on edge of map, pressed decrement x
-        if(this.ctlKey === 'left' && this.x > 0){
-            this.x = this.x - 50;
-        //if right key is pressed and player is not on edge of map increment x
-        }else if(this.ctlKey === 'right' && this.x != 800){
-            this.x = this.x + 50;
-        //if up key is pressed increment y
-        }else if(this.ctlKey === 'up'){
-            this.y = this.y - 50;
-        //if down key is pressed and player is not on edge of map decrement y
-        }else if (this.ctlKey === 'down' && this.y != 500){
-            this.y = this.y + 50;
-        }
-        this.ctlKey = null;
-
-        //Player dies if steps in lava
-        if(this.x >= 50 && this.x <= 101 && this.y <= 202 && this.y >= 151){
-                popup('lavaPopUp');
-                this.reset();
-        }
-
-        if(this.x >= 252 && this.x <= 303 && this.y <= 202 && this.y >= 151){
-                popup('lavaPopUp');
-                this.reset();
-        }
-
-        if(this.x >= 454 && this.x <= 505 && this.y <= 202 && this.y >= 151){
-                popup('lavaPopUp');
-                this.reset();
-        }
-
-        if(this.x >= 656 && this.x <= 707 && this.y <= 202 && this.y >= 151){
-                popup('lavaPopUp');
-                this.reset();
-        }
-        //If three gems collected and on water, player wins.
-        if(this.y < 25 && gemsObtained >= 3){
-            this.win();
-        } else if (this.y < 25 && gemsObtained < 3) {
-            popup('need-gems');
-            this.x = 650;
-            this.y = 60;
-            setTimeout(function(){popup('need-gems'); this.reset();}, 6000);
-
-        }
-    }
-}
-
-
-//Input handler for player
-Player.prototype.handleInput = function(e){
-    this.ctlKey = e;
-}
 
 // Instantiate enemies objects
 var allEnemies = [];
