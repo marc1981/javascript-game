@@ -15,10 +15,15 @@ If you can't figure out how to get started based on these instructions, just giv
 Now I have no idea what else is supposed to be in this file, so I will just explain everything. How's that? Okay this game is made using HTML, CSS, and JavaScript. It also makes use of image files. As I have stated there is one HTML file called 'index.html', and the two CSS files are called 'pop-styles.css' and 'style.css'. The HTML file sets up the canvas area and also contains the 'div' elements necessary to render the pop-up like windows seen at the start of the game and during other points in game play. The 'pop-styles.css' file contains the style elements for these pop-up windows. The 'style.css' file contains the rest of the style elements for the background and positioning of the canvas. The CSS files are located in a folder called 'css.'
 
 There are five separate JavaScript files located in a folder called 'js', and they are as follows:
+
 'm-app.js' - this contains the JavaScript code that governs the player's and the enemies' movements
+
 'm-engine.js' - this contains the JS code that sets up the canvas with its background and also sets up the top display for showing the time, number of lives left, and number of gems collected
+
 'm-resources.js' - the controls the most basic elements of the game loading
+
 'm-game-controls.js' - this code is for the countdown timer, and it also sets up the start screen for each new game
+
 'css-pop.js' -  this governs the action of the pop-ups
 
 The images used in this game are in PNG format. Many of the character and tile images were provided by Udacity, however the Gatekeeper, the lava, the vines, the altered bugs and altered player-character were created by me using Photoshop.
