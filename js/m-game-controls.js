@@ -14,7 +14,7 @@ function beginNewGame(){
 	document.getElementById('screen-overlay').style.display = 'block';
 	ctx.clearRect(0, -50, 750, 750);
 	lives = 3;
-	begin = false;
+	begin = true;
 	resetTimer = true;
 	gemsObtained = 0;
 }

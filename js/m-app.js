@@ -14,8 +14,9 @@ Player.prototype.render = function() {
 Player.prototype.reset = function() {
   this.x = 450;
   this.y = 450;
-  ctx.clearRect(0, 0, 500, 500);
   this.sprite = 'images/elfin.png';
+  begin = true;
+  ctx.clearRect(0, 0, 500, 500);
 };
 
 //If player reaches water, image changes, announces winning.
@@ -25,24 +26,19 @@ Player.prototype.win = function(){
     this.y = -50;
     resetTimer = true;
     lives = 3;
-    announceWinner();
-};
-
-//Show winner screen.
-function announceWinner(){
     popup('winner');
-    resetTimer = true;
     ctx.clearRect(0, -50, 750, 750);
-    player.reset();
-}
+    this.reset();
+};
 
 //If time runs out, announce and end game.
 Player.prototype.timesUp = function(){
-    player.sprite = "images/grave.png";
-    player.x = 405;
-    player.y = 455;
+    this.sprite = "images/grave.png";
+    this.x = 405;
+    this.y = 455;
+    begin = false;
     setTimeout(function(){ popup('timeUp'); }, 500);
-    setTimeout(function(){popup('timeUp'); player.sprite = 'images/elfin.png'; player.reset(); beginNewGame();}, 3000);
+    setTimeout(function(){ popup('timeUp'); playerNewImageClear(); beginNewGame();}, 5000);
 };
 
 //If player is killed the number of lives decrements, and if no more lives, game is over. Otherwise ask player to try again.
@@ -53,12 +49,14 @@ Player.prototype.dead = function(){
         this.sprite = "images/grave.png";
         this.x = 405;
         this.y = 455;
+        begin = false;
         setTimeout(function(){ popup('noLivesLeft'); }, 900);
-        setTimeout(function(){ popup('noLivesLeft'); player.sprite = 'images/elfin.png'; player.reset(); beginNewGame();}, 7000);
+        setTimeout(function(){ popup('noLivesLeft'); playerNewImageClear(); beginNewGame();}, 7000);
     } else {
         this.sprite = "images/dead.png";
         this.x = 405;
         this.y = 425;
+        begin = false;
         setTimeout(function(){
             popup('tryAgain');
         }, 500);
@@ -108,21 +106,25 @@ Player.prototype.update = function(){
         //Player dies if steps in lava
         if(this.x >= 50 && this.x <= 101 && this.y <= 202 && this.y >= 151){
                 popup('lavaPopUp');
+                this.sprite = "images/dead.png";
                 this.reset();
         }
 
         if(this.x >= 252 && this.x <= 303 && this.y <= 202 && this.y >= 151){
                 popup('lavaPopUp');
+                this.sprite = "images/dead.png";
                 this.reset();
         }
 
         if(this.x >= 454 && this.x <= 505 && this.y <= 202 && this.y >= 151){
                 popup('lavaPopUp');
+                this.sprite = "images/dead.png";
                 this.reset();
         }
 
         if(this.x >= 656 && this.x <= 707 && this.y <= 202 && this.y >= 151){
                 popup('lavaPopUp');
+                this.sprite = "images/dead.png";
                 this.reset();
         }
         //If three gems collected and on water, player wins.
@@ -195,6 +197,7 @@ Enemy.prototype.update = function(dt) {
     if(player.x >= this.x - 30 && player.x <= this.x + 30){
         if(player.y >= this.y - 30 && player.y <= this.y + 30){
             popup('bugPopUp');
+            player.sprite = "images/dead.png";
             player.reset();
         }
     }
@@ -212,6 +215,7 @@ FlyingEnemy.prototype.update = function(dt) {
     if(player.x >= this.x - 30 && player.x <= this.x + 30){
         if(player.y >= this.y - 30 && player.y <= this.y + 30){
             popup('flyingBugPopUp');
+            player.sprite = "images/dead.png";
             player.reset();
         }
     }
@@ -250,6 +254,7 @@ Weeds.prototype.update = function(dt){
     if(player.x >= this.x - 30 && player.x <= this.x + 30){
         if(player.y >= this.y - 50 && player.y <= this.y + 40){
             popup('vinePopUp');
+            player.sprite = "images/dead.png";
             player.reset();
         }
     }
