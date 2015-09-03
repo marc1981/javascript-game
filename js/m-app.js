@@ -12,11 +12,11 @@ Player.prototype.render = function() {
 
 //Reset player to beginning position
 Player.prototype.reset = function() {
-  this.x = 450;
-  this.y = 450;
-  this.sprite = 'images/elfin.png';
-  begin = true;
-  ctx.clearRect(0, 0, 500, 500);
+    this.x = 450;
+    this.y = 450;
+    this.sprite = 'images/elfin.png';
+    begin = true;
+    ctx.clearRect(0, 0, 500, 500);
 };
 
 //If player reaches water, image changes, announces winning.
@@ -38,7 +38,7 @@ Player.prototype.timesUp = function(){
     this.y = 455;
     begin = false;
     setTimeout(function(){ popup('timeUp'); }, 500);
-    setTimeout(function(){ popup('timeUp'); playerNewImageClear(); beginNewGame();}, 5000);
+    setTimeout(function(){ popup('timeUp'); beginNewGame();}, 5000);
 };
 
 //If player is killed the number of lives decrements, and if no more lives, game is over. Otherwise ask player to try again.
@@ -51,7 +51,7 @@ Player.prototype.dead = function(){
         this.y = 455;
         begin = false;
         setTimeout(function(){ popup('noLivesLeft'); }, 900);
-        setTimeout(function(){ popup('noLivesLeft'); playerNewImageClear(); beginNewGame();}, 7000);
+        setTimeout(function(){ popup('noLivesLeft'); beginNewGame();}, 7000);
     } else {
         this.sprite = "images/dead.png";
         this.x = 405;
@@ -63,21 +63,25 @@ Player.prototype.dead = function(){
     }
 };
 
-//clear contents where dead character was and reset player.
+//Refactoring this function renders it inoperable. Therefore this function was abandoned.
+//The function is commented out and kept for reference.
+/*
+Original function:
+
 function playerNewImageClear(){
     ctx.clearRect(450, 500, 100, 100);
     player.sprite = 'images/elfin.png';
     player.reset();
 }
 
-//show if player chooses to quit game.
-function quitGame(){
-    popup('quitPopUp');
-    player.x = 405;
-    player.y = 455;
-    player.sprite = 'images/grave.png';
-    setTimeout(function(){player.sprite = 'images/elfin.png'; popup('quitPopUp'); player.reset(); beginNewGame();}, 5000);
+Refactored function:
+
+Player.prototype.playerNewImageClear = function(){
+    ctx.clearRect(450, 500, 100, 100);
+    this.sprite = 'images/elfin.png';
+    this.reset();
 }
+*/
 
 //sets initial lives and gems, and then inserts number into location on screen
 var begin = false;
@@ -132,7 +136,7 @@ Player.prototype.update = function(){
             this.win();
         } else if (this.y < 25 && gemsObtained < 3) {
             popup('need-gems');
-            this.x = 650;
+            this.x = 690;
             this.y = 60;
             setTimeout(function(){popup('need-gems'); this.reset();}, 6000);
 

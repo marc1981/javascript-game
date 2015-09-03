@@ -8,16 +8,29 @@ function startGame(){
 	resetTimer = false;
 	countdown();
 }
+
 //begin new game if player chooses to
 function beginNewGame(){
 	document.getElementById('start').style.display = 'block';
 	document.getElementById('screen-overlay').style.display = 'block';
 	ctx.clearRect(0, -50, 750, 750);
+	player.reset();
 	lives = 3;
 	begin = true;
 	resetTimer = true;
 	gemsObtained = 0;
 }
+
+//show if player chooses to quit game.
+//reset function called after image of gravestone is shown. distinct from reset function alone.
+function quitGame(){
+    popup('quitPopUp');
+    player.x = 405;
+    player.y = 455;
+    player.sprite = 'images/grave.png'; //reset function follows image display.
+    setTimeout(function(){ popup('quitPopUp'); player.reset(); beginNewGame();}, 5000);
+}
+
 //controls timer
 function startTimer(duration, display) {
     var start = Date.now(),
